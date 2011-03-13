@@ -28,3 +28,26 @@ html {
 .highlight {
 	color: #bfbfbf;
 }
+
+#login {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	padding: 5px;
+	width: 16px;
+	height: 16px;
+}
+
+#login img {
+	visibility: hidden;
+	width: 16px;
+	height: 16px;
+}
+
+#login:hover img {
+	visibility: visible;
+}
+
+#login a img {
+	border: none;
+}

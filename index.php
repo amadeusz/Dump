@@ -1,5 +1,15 @@
 <?php
 	require_once 'lib/limonade.php';
+	
+	function auth() {
+		$username = 'tomek'; $password = 'gofry';
+		$success = (isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW']) && $_SERVER['PHP_AUTH_USER'] == $username && $_SERVER['PHP_AUTH_PW'] == $password);
+		if (!$success) {
+			header('WWW-Authenticate: Basic realm="Wymagane logowanie"');
+			header('HTTP/1.0 401 Unauthorized');
+		}
+		return $success;
+	}
 
 	function configure() {
 		option('env', ENV_DEVELOPMENT);
@@ -13,13 +23,18 @@
 
 	dispatch('/admin', 'show');
 	function show() {
+		if (!auth()) return 'niewłaściwe hasło';
+	
 		set('error_message', check_permissions());
 		set('max_size', ini_get('post_max_size') .'B');
+		
 		return render('html_basics');
 	}
 	
 	dispatch_post('/order', 'save_order');
 	function save_order() {
+		if (!auth()) return 'niewłaściwe hasło';
+			
 		if(!empty($_POST) && !empty($_POST['order'])) {
 			file_put_contents('photo/meta/order', $_POST['order']);
 			return '{success: true}';
@@ -116,6 +131,8 @@ function html_basics($vars) { extract($vars); ?>
 </head>
 <body>
 
+<div id="login"><a href="."><img src="lib/img/arrow_undo.png" /></a></div>
+
 <div id="buttons">
 	Album <select></select>
 	<input id="new" value="Nowy album" type="button" />
@@ -160,6 +177,8 @@ function html_viewer($vars) { extract($vars); ?>
 </head>
 
 <body>
+
+<div id="login"><a href="admin"><img src="lib/img/key.png" /></a></div>
 
 <div id="top"></div>
 
