@@ -1,0 +1,21 @@
+.clear:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+}
+ 
+.clear {
+	display: block;
+}
+ 
+html[xmlns] .clear {
+	display: block;
+}
+ 
+* html .clear {
+	height: 1%;
+}
+

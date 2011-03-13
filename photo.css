@@ -1,0 +1,24 @@
+div, ul, li, p { margin: 0; padding: 0; }
+ul, li { list-style-type: none; }
+
+body { margin: 8px; }
+
+#buttons { text-align: right; }
+
+#container { margin: 10px; padding: 6px; display: block; }
+#container li { background-color: #90ee90; margin: 6px; padding: 6px; display: block; width: 100px; height: 100px; float: left; text-align: center; overflow: hidden; }
+#container li img.half { width: 50%; }
+
+#container .placeholder { background-color: #ffc0cb; }
+#container .joining { background-color: #e5e5e5; }
+#container .master { background-color: #ffc0cb; }
+
+#dropzone { margin: 10px; padding: 10px; background-color: #68BFEF; }
+#dropzone img { vertical-align: middle; margin-left: 10px; margin-right: 10px; }
+#dropzone img:last-child { float: right; margin-left: 10px; margin-right: 10px; }
+
+#help div { padding-top: 20px; }
+#help p { text-align: center; color: #666; padding-top: 10px; }
+
+#container li, #dropzone { -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; }
+
