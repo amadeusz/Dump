@@ -149,7 +149,8 @@ $(document).ready( function() {
 			
 			names = [];
 			for (var tab_title in albums) {
-				names.push(tab_title);
+				if(albums[tab_title].length > 0)
+					names.push(tab_title);
 			}
 			names.sort();
 			

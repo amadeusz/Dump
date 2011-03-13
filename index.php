@@ -153,6 +153,7 @@ function html_viewer($vars) { extract($vars); ?>
 	
 	<link href="lib/dump.css" rel="stylesheet" />
 	<link href="dump.css" rel="stylesheet" />
+	<link href="lib/img/favico.png" rel="shortcut icon" type="image/png" />
 	
 	<meta charset="utf-8" />
 	<title>PhotoDump</title>
