@@ -1,6 +1,6 @@
 RewriteEngine on
 
-RewriteBase /~maciek/photo
+RewriteBase /~maciek/photo/
 
 RewriteCond %{SCRIPT_FILENAME} !-f
 RewriteCond %{SCRIPT_FILENAME} !-d

@@ -1,5 +1,5 @@
-var cache = new Array();
-var pobrano = new Array();
+var cache = [];
+var pobrano = [];
 
 function pobierz(i) {
 
@@ -22,3 +22,56 @@ function pobierz(i) {
 	}
 	
 }
+
+	$("#left").hide();
+	$("#right").hide();
+
+	$('#przelacznik_gory').click( function() {
+		$('#top').toggle();
+		Viewer.layout();
+		Viewer.show();
+	} );
+
+	$('#przelacznik_prawego').click( function() {
+		$('#right').toggle();
+		Viewer.layout();
+		Viewer.show();
+	} );
+
+	$('#przelacznik_dolu').click( function() {
+		$('#bottom').toggle();
+		Viewer.layout();
+		Viewer.show();
+	} );
+
+	$('#przelacznik_lewego').click( function() {
+		$('#left').toggle();
+		Viewer.layout();
+		Viewer.show();
+	});
+
+//				$('#top').click( function() {
+//					if(Viewer.opened > 0) {
+//						$('#miniatury span.slide:eq('+ (Viewer.opened -1) +')').click();
+//					}
+//				} );	
+
+//				$('#right').click( function() {	
+//					Viewer.calculate_thumbnails();	
+//					if(Viewer.thumbnails_offset + Viewer.thumbnails_space*0.66 < Viewer.thumbnails_width - Viewer.thumbnails_space/2 - $('#miniatury img:last').outerWidth(true)/2) {
+//						$('#miniatury').animate( {
+//							marginLeft: -(Viewer.thumbnails_offset + Viewer.thumbnails_space*0.66) +'px'
+//						}, 500 );
+//					}
+//					else slide($('#miniatury span.slide:last'), 500);
+//				} );
+
+//				$('#left').click( function() {	
+//					Viewer.calculate_thumbnails();	
+//					if(this.thumbnails_offset > Viewer.thumbnails_space/2 + $('#miniatury img:first').outerWidth(true)/2) {
+//						$('#miniatury').animate( {
+//							marginLeft: -(Viewer.thumbnails_offset - Viewer.thumbnails_space*0.66) +'px'
+//						}, 500 );
+//					}
+//					else slide($('#miniatury span.slide:first'), 500);
+//				} );

@@ -1,93 +1,30 @@
 html {
-	font-family: Trebuchet, sans;
-	font-weight: bold;
-}
-
-html, body {
-	margin: 0;
-	padding: 0;	
-}
-
-body {
-	background-color: #FFFFDC;	
-}
-
-#gora, #prawo, #dol, #lewo, #pokaz, #przelaczniki {
-	position: absolute;
-	color: white;
-
-}
-
-#gora {
-	top: 0;
-	text-align: center;
-}
-
-#prawo {
-	right: 0;
-}
-
-#dol {
-	bottom: 0;
-	width: 100%;
-}
-
-#lewo {
-	left: 0;
-}
-
-#gora, #przelacznik_gory {
-	background-color: #349F3F;
-}
-
-#prawo, #przelacznik_prawego {
-	background-color: #1E90FF;
-}
-
-#dol, #przelacznik_dolu {
-	background-color: #E8D937;
-}
-
-#lewo, #przelacznik_lewego {
-	background-color: #FD8E80;
-}
-
-
-
-#pokaz {
-	overflow: hidden;
 	background-color: black;
-	text-align: center;
+}
+
+#top, #bottom, #left, #right {
+	background-color: transparent;
+}
+
+#left, #right {
+	display: none;
+}
+
+#top span {
+	padding: 0px 10px;
+	font-size: 16px;
+	font-family: Arial;
+}
+
+#top {
+	padding-top: 10px;
+	padding-bottom: 10px;
 }
 
 #przelaczniki {
-	top: 0px;
-	right: 57px;
+	display: none;
 }
 
-#przelaczniki div {
-	padding: 1px;
-	margin-right: 3px;
-	width: 16px;
-	height: 16px;
-	float: left;
-	border: 1px solid white;
+.highlight {
+	color: #bfbfbf;
 }
-
-#przelaczniki div:hover {
-	background-color: red;
-}
-
-#dol {
-	overflow: hidden;
-}
-
-#dol #miniatury {
-	white-space: nowrap;
-}
-
-#dol #miniatury img {
-	margin: 5px;
-	margin-top: 8px;
-}
-

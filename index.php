@@ -1,5 +1,4 @@
 <?php
-
 	require_once 'lib/limonade.php';
 
 	function configure() {
@@ -7,7 +6,12 @@
 		option('base_uri', '/~maciek/photo');
 	}
 
-	dispatch('/', 'show');
+	dispatch('/', 'viewer');
+	function viewer() {
+		return render('html_viewer');
+	}
+
+	dispatch('/admin', 'show');
 	function show() {
 		set('error_message', check_permissions());
 		set('max_size', ini_get('post_max_size') .'B');
@@ -134,6 +138,45 @@ function html_basics($vars) { extract($vars); ?>
 	<div>
 		<p>Aby usunąć zdjęcie, należy na nie kliknąć dwukrotnie.</p>
 		<p>Przesyłane zdjęcie może mieć maksymalnie <?php echo $max_size; ?>.</p></div>
+</div>
+
+</body>
+</html><?php
+}
+
+function html_viewer($vars) { extract($vars); ?>
+<!doctype html>
+<html lang="pl">
+<head>
+	<script src="lib/jquery.js" type="text/javascript"></script>
+	<script src="dump.js" type="text/javascript"></script>
+	
+	<link href="lib/dump.css" rel="stylesheet" />
+	<link href="dump.css" rel="stylesheet" />
+	
+	<meta charset="utf-8" />
+	<title>PhotoDump</title>
+</head>
+
+<body>
+
+<div id="top"></div>
+
+<div id="bottom">
+	<div id="miniatury"></div>
+</div>
+
+<div id="left">Lewo</div>
+
+<div id="right">Prawo</div>
+
+<div id="pokaz"><img src="" alt="" /></div>
+
+<div id="przelaczniki">
+	<div id="przelacznik_gory"></div>
+	<div id="przelacznik_prawego"></div>
+	<div id="przelacznik_dolu"></div>
+	<div id="przelacznik_lewego"></div>
 </div>
 
 </body>

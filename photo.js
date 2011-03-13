@@ -71,6 +71,7 @@ Album = {
 					$("ul#container li:last-child").children().removeClass("half");
 				}
 			}
+	
 		this.align_thumbnails();
 	},
 	current : function() {
@@ -141,9 +142,9 @@ Album = {
 	
 	},
 	align_thumbnails : function() {
-		$('#container img').each( function() {
+		$('#container img').load( function() {
 			$(this).css('margin-top', ($(this).parent().height() - $(this).height())/2 +'px');
-		} );
+		});
 	}
 }
 
