@@ -62,12 +62,12 @@ Album = {
 				if ((albums[album][photo]).length < 10)  {
 					for (var half_photo in albums[album][photo])
 						if (albums[album][photo].hasOwnProperty(half_photo)) {
-							$("ul#container li:last-child").append('<img data-src="'+ albums[album][photo][half_photo] +'" src="thumbnail/'+ albums[album][photo][half_photo] +'/100x100" />');
+							$("ul#container li:last-child").append('<img data-src="'+ albums[album][photo][half_photo] +'" src="thumbnail/'+ albums[album][photo][half_photo] +'-100x100" />');
 							$("ul#container li:last-child").children().addClass("half");
 						}
 				}
 				else {
-					$("ul#container li:last-child").append('<img data-src="'+ albums[album][photo] +'" src="thumbnail/'+ albums[album][photo] +'/100x100" />');
+					$("ul#container li:last-child").append('<img data-src="'+ albums[album][photo] +'" src="thumbnail/'+ albums[album][photo] +'-100x100" />');
 					$("ul#container li:last-child").children().removeClass("half");
 				}
 			}
@@ -79,7 +79,7 @@ Album = {
 	generate : function() {
 		$("ul#container img").each( function() {
 			alert($(this).attr('data-src'));
-			$.get('thumbnail/'+ $(this).attr('data-src') +'/160x100');
+			$.get('thumbnail/'+ $(this).attr('data-src') +'-160x100');
 		});
 	},
 	activate_buttons : function() {
@@ -265,7 +265,7 @@ $( function() {
 		uploadFinished: function(i, file, response, time) {
 			if(response.success) {
 				albums[Album.current()].push(response.hash);
-				$.get('thumbnail/'+ response.hash +'/160x100');
+				$.get('thumbnail/'+ response.hash +'-160x100');
 				Album.refresh(Album.current());
 				Album.save();
 			}

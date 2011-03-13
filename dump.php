@@ -1,24 +1,20 @@
-<?php
-	header('Content-Type: application/xhtml+xml;charset=UTF-8');
-	header('Vary: Accept');
-	
-	echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-	echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">' . "\n";
-?>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<!doctype html>
+<html lang="pl">
 <head>
 	<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8"/>
 	
 	<script src="lib/jquery.js" type="text/javascript"></script>
-	<script src="photodump.js.php" type="text/javascript"></script>
-	<link href="photodump.css" rel="stylesheet" />
+	<script src="dump.js.php" type="text/javascript"></script>
+	<link href="dump.css" rel="stylesheet" />
+	<link href="dump_local.css" rel="stylesheet" />
 
+	<meta charset="utf-8" />
 	<title>PhotoDump</title>
 </head>
 
-<body onload="load()">
+<body>
 
-<div id="gora"><select></select></div>
+<div id="gora"></div>
 
 <div id="prawo">Prawo</div>
 

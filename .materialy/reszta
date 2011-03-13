@@ -1,0 +1,24 @@
+var cache = new Array();
+var pobrano = new Array();
+
+function pobierz(i) {
+
+	if(i >= 0 && i < cache.length && !pobrano[i]) {
+		$.cacheImage(cache[i], {
+			load : function (e) {
+				alert(i);
+				$('#miniatury img:eq('+ i +')').css('border', '2px solid green');
+				pobrano[i] = true;
+				pobierz(i-1);
+				pobierz(i+1);
+			},
+			error: function (e) {
+				$('#miniatury img:eq('+ i +')').css('border', '2px solid red');
+			},
+			abort: function (e) {
+				$('#miniatury img:eq('+ i +')').css('border', '2px solid yellow');
+			}
+		} );
+	}
+	
+}

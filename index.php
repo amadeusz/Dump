@@ -28,14 +28,34 @@
 		return file_get_contents('photo/meta/order');
 	}
 	
-	dispatch('/thumbnail/([a-zA-Z\d]+)/(\d+)x(\d+)', 'aquire_thumbnail');
+	dispatch('/dimensions', 'get_dimensions');
+	function get_dimensions() {
+		$place = 'http://localhost/~maciek/';
+		$arr = array();
+		
+		$zdjecia = 'photo';
+		$miniatury = $place .'photo/thumbnail';
+
+		$i = 0; foreach (new DirectoryIterator($zdjecia) as $fileInfo) {
+			if($fileInfo->isDot()) continue;
+			if($fileInfo->getType() == 'file') {
+				list($width, $height, $type, $attr) = getimagesize($zdjecia .'/'. $fileInfo->getFilename());
+				list($width_tb, $height_tb, $type_tb, $attr_tb) = getimagesize($miniatury .'/'. $fileInfo->getFilename() .'-160x100');
+				$arr[] = '"'. $fileInfo->getFilename() .'" : ['. $width .', '. $height .', '. $width_tb .', '. $height_tb .']';
+			}
+		}
+		
+		return '{'. implode(", ", $arr) .'}';
+	}
+	
+	dispatch('^/thumbnail/([a-z0-9]+)-(\d+)x(\d+)', 'aquire_thumbnail');
 	function aquire_thumbnail() {
 		$sha = sha1_file('photo/'. params(0));
 		$thumbnail_path = 'photo/thumbnails/'. $sha ."-". params(1) ."x". params(2);
 		if(!file_exists($thumbnail_path)) {
-			require 'lib/imaging.php';
+			require_once 'lib/imaging.php';
 			$img = new imaging;
-			$img->set_img('photo/'. $sha);
+			$img->set_img('photo/'. params(0));
 			$img->set_quality(85);
 			$img->set_size(params(1), params(2));
 			$img->save_img($thumbnail_path);
