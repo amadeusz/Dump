@@ -51,3 +51,11 @@ html {
 #login a img {
 	border: none;
 }
+
+#miniatury span.slide {
+	opacity: 0.2;
+}
+
+#miniatury span.slide:hover {
+	opacity: 1.0;
+}

@@ -59,7 +59,7 @@
 			if($fileInfo->isDot()) continue;
 			if($fileInfo->getType() == 'file') {
 				list($width, $height, $type, $attr) = getimagesize($zdjecia .'/'. $fileInfo->getFilename());
-				list($width_tb, $height_tb, $type_tb, $attr_tb) = getimagesize($miniatury .'/'. $fileInfo->getFilename() .'-160x100');
+				list($width_tb, $height_tb, $type_tb, $attr_tb) = getimagesize($miniatury .'/'. $fileInfo->getFilename() .'-100x60');
 				$arr[] = '"'. $fileInfo->getFilename() .'" : ['. $width .', '. $height .', '. $width_tb .', '. $height_tb .']';
 			}
 		}

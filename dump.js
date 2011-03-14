@@ -41,7 +41,7 @@ Viewer = {
 		$('#miniatury').html('');
 		
 		for(var i = 0; i < this.photos.length; i++)
-			$('#miniatury').append('<span class="slide"><img src="thumbnail/'+ this.photos[i][0] +'-160x100' +'" width="'+ this.photos[i][3] +'" height="'+ this.photos[i][4] +'" /></span>');
+			$('#miniatury').append('<span class="slide"><img src="thumbnail/'+ this.photos[i][0] +'-100x60' +'" width="'+ this.photos[i][3] +'" height="'+ this.photos[i][4] +'" /></span>');
 	
 		$('#miniatury span.slide').each( function(i, val) {
 			$(this).click( function() {
