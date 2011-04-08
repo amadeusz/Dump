@@ -72,8 +72,10 @@ define('X-SENDFILE',            10);
 define('X-LIGHTTPD-SEND-FILE',  20);
 
 # for PHP 5.3.0 <
-if(!defined('E_DEPRECATED'))      define('E_DEPRECATED', 8192);
-if(!defined('E_USER_DEPRECATED')) define('E_USER_DEPRECATED', 16384);
+if(!defined('E_DEPRECATED'))         define('E_DEPRECATED',        8192);
+if(!defined('E_USER_DEPRECATED'))    define('E_USER_DEPRECATED',   16384);
+# for PHP 5.2.0 <
+if (!defined('E_RECOVERABLE_ERROR')) define('E_RECOVERABLE_ERROR', 4096);
 
 
 ## SETTING BASIC SECURITY _____________________________________________________
@@ -1344,7 +1346,8 @@ function route_find($method, $path)
         {
           $names = range($n_names, $n_matches - 1);
         }
-        $params = array_replace($params, array_combine($names, $matches));
+        $arr_comb = array_combine($names, $matches);
+        $params = array_replace($params, $arr_comb);
       }
       $route["params"] = $params;
       return $route;
@@ -1929,8 +1932,8 @@ function debug($var, $output_as_html = true)
       $out = var_export($var, true);
       break;
   }
-  if ($output_as_html) { $out = h($out);  }
-  return "<pre>\n" . $out ."</pre>";
+  if ($output_as_html) { $out = "<pre>\n" . h($out) ."</pre>"; }
+  return $out;
 }
 
 
@@ -2049,7 +2052,8 @@ function redirect_to($params)
       }
       $n_params[] = $param;
     }
-    $uri = call_user_func_array('url_for', $n_params);
+		$uri = call_user_func_array('url_for', $n_params);
+		$uri = htmlspecialchars_decode($uri, ENT_NOQUOTES);
     stop_and_exit(false);
     header('Location: '.$uri, true, $status);
     exit;
@@ -2579,7 +2583,29 @@ function filter_var_url($str)
 }
 
 
+/**
+ * For PHP 5 < 5.1.0 (backward compatibility)
+ * (from {@link http://www.php.net/manual/en/function.htmlspecialchars-decode.php#82133})
+ * 
+ * @param string $string 
+ * @param string $quote_style, one of: ENT_COMPAT, ENT_QUOTES, ENT_NOQUOTES 
+ * @return the decoded string
+ */
+function limonade_htmlspecialchars_decode($string, $quote_style = ENT_COMPAT)
+{
+	$table = array_flip(get_html_translation_table(HTML_SPECIALCHARS, $quote_style));
+	if($quote_style === ENT_QUOTES)
+		$table['&#039;'] = '\'';
+	return strtr($string, $table);
+}
 
+if(!function_exists('htmlspecialchars_decode'))
+{
+	function htmlspecialchars_decode($string, $quote_style = ENT_COMPAT)
+	{
+		return limonade_htmlspecialchars_decode($string, $quote_style);
+	}
+}
 
 
 #   ================================= END ==================================   #

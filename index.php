@@ -13,7 +13,8 @@
 
 	function configure() {
 		option('env', ENV_DEVELOPMENT);
-		option('base_uri', '/~maciek/photo');
+		option('base_uri', '/');
+		if (gethostname() == 'satan') { option('base_uri', '/~maciek/photo'); }
 	}
 
 	dispatch('/', 'viewer');
@@ -49,11 +50,12 @@
 	
 	dispatch('/dimensions', 'get_dimensions');
 	function get_dimensions() {
-		$place = 'http://localhost/~maciek/';
+		$place = 'http://photo.appload.pl/';
+		if (gethostname() == 'satan') { $place = 'http://localhost/~maciek/'; }
 		$arr = array();
 		
 		$zdjecia = 'photo';
-		$miniatury = $place .'photo/thumbnail';
+		$miniatury = $place .'thumbnail';
 
 		$i = 0; foreach (new DirectoryIterator($zdjecia) as $fileInfo) {
 			if($fileInfo->isDot()) continue;
