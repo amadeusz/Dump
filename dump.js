@@ -183,8 +183,6 @@ function generate_list(name) {
 		}
 	});
 	
-	console.log(photos);
-	
 	return photos;
 }
 

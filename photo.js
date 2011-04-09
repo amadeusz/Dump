@@ -215,7 +215,7 @@ $( function() {
 	});
 	
 	$('#dropzone').filedrop({
-			url: 'upload.php',              // upload handler, handles each file separately
+			url: 'upload',              // upload handler, handles each file separately
 			paramname: 'kot',          // POST parameter name used on serverside to reference file
 //			data: { 
 //				album: Album.current()           // send POST variables
