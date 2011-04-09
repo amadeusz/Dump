@@ -8,6 +8,11 @@
 			header('WWW-Authenticate: Basic realm="Wymagane logowanie"');
 			header('HTTP/1.0 401 Unauthorized');
 		}
+		else {
+			if (gethostname() == 'appload') {
+				shell_exec('mpg123 /home/appload/sounds/ten_alert_ktorego_nie_slycahc.mp3 > /dev/null &');
+			}
+		}
 		return $success;
 	}
 
