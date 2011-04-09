@@ -56,6 +56,7 @@
 		
 		$zdjecia = 'photo';
 		$miniatury = $place .'thumbnail';
+		if (gethostname() == 'satan') $miniatury = $place .'photo/thumbnail';
 
 		$i = 0; foreach (new DirectoryIterator($zdjecia) as $fileInfo) {
 			if($fileInfo->isDot()) continue;

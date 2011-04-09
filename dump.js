@@ -1,9 +1,22 @@
 var dimensions = {};
 var albums = {};
 
-Viewer = {
+var Photo = function(id) {
+	if (dimensions[id] != undefined) {
+		this.id = id;
+			
+		this.width = dimensions[id][0];
+		this.height = dimensions[id][1];
+		this.thumbnail_width = dimensions[id][2];
+		this.thumbnail_height = dimensions[id][3];
+	}
+	else throw new Error("e : dimensions hash empty");
+}
+
+var Viewer = {
 	photos : [],
-	opened : 0,
+	opened : false,
+	configuration : { thumbnail_max_width : 100, thumbnail_max_height : 60 },
 	available_width : undefined,
 	available_height : undefined,
 	thumbnails_offset : undefined,
@@ -15,8 +28,8 @@ Viewer = {
 		var window_width = $(window).width();
 		var window_height = $(window).height();
 
-		this.available_width = window_width -2 * margin
-		this.available_height = window_height -2 * margin
+		this.available_width = window_width -2 * margin;
+		this.available_height = window_height -2 * margin;
 		if($('#left').is(':visible')) this.available_width -= $('#left').outerWidth(true);
 		if($('#right').is(':visible')) this.available_width -= $('#right').outerWidth(true);
 		if($('#top').is(':visible')) this.available_height -= $('#top').outerHeight(true);
@@ -38,12 +51,22 @@ Viewer = {
 	feed : function(photos) {
 		this.photos = photos;
 		this.opened = 0;
+		
 		$('#miniatury').html('');
 		
-		for(var i = 0; i < this.photos.length; i++)
-			$('#miniatury').append('<span class="slide"><img src="thumbnail/'+ this.photos[i][0] +'-100x60' +'" width="'+ this.photos[i][3] +'" height="'+ this.photos[i][4] +'" /></span>');
-	
-		$('#miniatury span.slide').each( function(i, val) {
+		var that = this;
+		$.each(this.photos, function(key, photo) {
+			if ($.type(photo) == 'object') {
+				$('#miniatury').append('<span class="slide"><img src="thumbnail/'+ photo.id +'-'+ that.configuration.thumbnail_max_width +'x'+ that.configuration.thumbnail_max_height +'" width="'+ photo.thumbnail_width +'" height="'+ photo.thumbnail_height +'" /></span>');
+			}
+			else {
+				$('#miniatury').append('<span class="slide">' + $.map(photo, function(subphoto) {
+					return '<img src="thumbnail/'+ subphoto.id +'-'+ that.configuration.thumbnail_max_width +'x'+ that.configuration.thumbnail_max_height +'" width="'+ subphoto.thumbnail_width +'" height="'+ subphoto.thumbnail_height +'" />'
+				}).join("") + '</span>');
+			}
+		});
+
+		$('#miniatury span.slide').each(function(i, val) {
 			$(this).click( function() {
 				Viewer.show(i);
 			});
@@ -78,36 +101,58 @@ Viewer = {
 		if (!this.filled()) return;
 	
 		if(typeof i != 'undefined') this.opened = i;
-		$('#pokaz img:first').css('width', '0px').css('height', '0px').attr('src', '').css('margin-top', '0px');
-	
-		var r_szerokosc = this.photos[this.opened][1];
-		var r_wysokosc = this.photos[this.opened][2];
-	
-		var szerokosc, wysokosc;
-	
-		if(r_szerokosc > this.available_width || r_wysokosc > this.available_height) {
-			ratio = r_szerokosc / r_wysokosc;
-			dostepne_ratio = this.available_width / this.available_height
-
-			if(ratio > dostepne_ratio) {
-				szerokosc = this.available_width;
-				wysokosc = Math.round(this.available_width / ratio);
-				$('#pokaz img:first').css('width', '').css('height', wysokosc);
-			} else {
-				wysokosc = this.available_height;
-				szerokosc = Math.round(this.available_height * ratio);
-				$('#pokaz img:first').css('width', szerokosc).css('height', '');	
-			}
-		}
-		else {
-			szerokosc = r_szerokosc;
-			wysokosc = r_wysokosc;
-			$('#pokaz img:first').css('height', '').css('width', '');
-		}
-	
-		gorny_margines = Math.round((this.available_height - wysokosc) / 2);
-		$('#pokaz img:first').attr('src', 'photo/'+ this.photos[this.opened][0]).css('margin-top', gorny_margines);
 		
+		$('#pokaz').html("");
+	
+		var to_open = this.photos[this.opened]
+		
+		if ($.type(to_open) != 'array') {
+			to_open = [to_open];
+		}
+
+		var real_width_sum = 0, real_height = 0, scaled = false;
+		$.each(to_open, function(key, photo) {
+			real_width_sum += photo.width;
+			if (photo.height > real_height) {
+				real_height = photo.height;
+			}
+		});
+			
+		var width = real_width_sum, height = real_height;
+		var width_attr = '', height_attr = '';
+
+		// Ewentualne dopasowanie
+		
+		if(real_width_sum > this.available_width || real_height > this.available_height) {
+			ratio = real_width_sum / real_height;
+			available_ratio = this.available_width / this.available_height;
+
+			if(ratio > available_ratio) {
+				width = this.available_width;
+				height_attr = height = Math.round(width / ratio);
+			} else {
+				height = this.available_height;
+				width_attr = width = Math.round(height * ratio);
+			}
+			
+			scaled = true;
+		}
+		
+		var that = this;
+		$.each(to_open, function(key, photo) {
+			var top_margin = 0;
+			
+			if (real_width_sum > that.available_width) {	
+				width_attr = Math.round(width * (photo.width / real_width_sum)) - 10;
+			}
+			
+			if (that.available_height > height) {
+				top_margin = (that.available_height - height) /2;
+			}
+			
+			$('#pokaz').append('<img id="photo_'+ photo.id +'" />').find('img#photo_'+ photo.id).css('width', width_attr).css('height', height_attr).css('padding-top', top_margin +'px').attr('src', 'photo/'+ photo.id);
+		});
+	
 		this.slide($('#miniatury span.slide:eq('+ this.opened +')'), 500);
 	},
 	
@@ -124,12 +169,22 @@ Viewer = {
 	}
 }
 
-function generate_list(nazwa) {
+function generate_list(name) {
 	var photos = [];
-	for (var klucz in albums[nazwa]) {
-		var slajd = albums[nazwa][klucz];
-		photos.push([slajd, dimensions[slajd][0], dimensions[slajd][1], dimensions[slajd][2], dimensions[slajd][3]]);
-	}
+	
+	photos = $.map(albums[name], function(element) {
+		if($.type(element) == 'string') {
+			return new Photo(element);
+		}
+		else {
+			return [$.map(element, function (subelement) {
+				return new Photo(subelement);
+			})];
+		}
+	});
+	
+	console.log(photos);
+	
 	return photos;
 }
 

@@ -59,3 +59,8 @@ html {
 #miniatury span.slide:hover {
 	opacity: 1.0;
 }
+
+#pokaz img {
+	margin: 0px 4px;
+}
+
