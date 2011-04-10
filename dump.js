@@ -15,7 +15,9 @@ var Photo = function(id) {
 
 var Viewer = {
 	photos : [],
-	opened : false,
+	opened : undefined,
+	highlighted : false,
+	buffered : {},
 	configuration : { thumbnail_max_width : 100, thumbnail_max_height : 60 },
 	available_width : undefined,
 	available_height : undefined,
@@ -50,6 +52,7 @@ var Viewer = {
 	
 	feed : function(photos) {
 		this.photos = photos;
+		this.buffered = {};
 		this.opened = 0;
 		
 		$('#miniatury').html('');
@@ -71,6 +74,7 @@ var Viewer = {
 				Viewer.show(i);
 			});
 		});
+		this.highlight_all();
 	},
 	
 	filled : function() {
@@ -94,12 +98,13 @@ var Viewer = {
 	slide : function(thumbnail, czas) {
 		this.calculate_thumbnails();
 		nowa_pozycja = Math.round(this.thumbnails_offset + thumbnail.position().left - this.thumbnails_space/2 + thumbnail.outerWidth(true) /2);
-		$('#miniatury').animate( { marginLeft: - nowa_pozycja +'px' }, czas );
+		$('#miniatury').stop().animate( { marginLeft: - nowa_pozycja +'px' }, czas );
 	},
 	
 	show : function(i) {
 		if (!this.filled()) return;
 	
+		var last_opened = this.opened;
 		if(typeof i != 'undefined') this.opened = i;
 		
 		$('#pokaz').html("");
@@ -150,10 +155,12 @@ var Viewer = {
 				top_margin = (that.available_height - height) /2;
 			}
 			
-			$('#pokaz').append('<img id="photo_'+ photo.id +'" />').find('img#photo_'+ photo.id).css('width', width_attr).css('height', height_attr).css('padding-top', top_margin +'px').attr('src', 'photo/'+ photo.id);
+			$('#pokaz').append('<img id="photo_'+ photo.id +'" />').find('img#photo_'+ photo.id).css('width', width_attr).css('height', height_attr).css('padding-top', top_margin +'px').attr('src', 'photo/'+ photo.id).attr('alt', '');
 		});
 	
-		this.slide($('#miniatury span.slide:eq('+ this.opened +')'), 500);
+		var opened = this.opened;
+		this.slide($('#miniatury span.slide:eq('+ this.opened +')'));
+		this.highlight(last_opened);
 	},
 	
 	show_next : function() {
@@ -162,9 +169,57 @@ var Viewer = {
 				$('#miniatury span.slide:eq('+ (this.opened +1) +')').click();
 			}
 			else {
-				if ($("#top span.highlight").next())
-					$("#top span.highlight").next().click();
+				if ($("#top a.highlight").next())
+					$("#top a.highlight").next().click();
 			}
+		}
+		Viewer.buffer();
+	},
+	
+	buffer : function() {
+		var to_buffer = [];
+		for (var i = 1; i < 3; i++) {
+			if (this.opened + i < this.photos.length) {
+				if ($.type(this.photos[this.opened + i]) == 'array') {
+					to_buffer = $.merge(to_buffer, this.photos[this.opened + i]);
+				}
+				else {
+					to_buffer.push(this.photos[this.opened + i]);
+				}
+			}
+		}
+	
+		var that = this;
+		$.each(to_buffer, function(key, photo) {
+			if (that.buffered[photo.id] === undefined) {
+				that.buffered[photo.id] = new Image(photo.width, photo.height);
+				that.buffered[photo.id].src = 'photo/'+ photo.id;
+			}
+		});
+	},
+	
+	highlight : function(last) {
+		if (last !== this.opened) {
+			if (!this.highlighted) {
+				if (last != undefined)
+					$('#miniatury span.slide:eq('+ last +')').animate( { opacity: 0.3 } );
+				$('#miniatury span.slide:eq('+ this.opened +')').animate( { opacity: 0.7 } );
+			}
+		}
+	},
+	
+	highlight_all : function(should_i) {
+		if (should_i === undefined)
+			should_i = this.highlighted;
+			
+		if (should_i) {
+			this.highlighted = true;
+			$("#miniatury span").animate( { opacity: 1.0 } );
+		}
+		else {
+			this.highlighted = false;
+			$("#miniatury span").animate( { opacity: 0.3 } );
+			$('#miniatury span.slide:eq('+ this.opened +')').stop().animate( {opacity: 0.7} );
 		}
 	}
 }
@@ -190,7 +245,14 @@ $(document).ready( function() {
 	$(window).resize( function() {
 		Viewer.layout();
 		Viewer.show();
-	});	
+	});
+	
+	$("#miniatury").hover(function() {
+		Viewer.highlight_all(true);
+	},
+	function() {
+		Viewer.highlight_all(false);
+	});
 
 	$.get('dimensions', function(data) {
 		dimensions = $.parseJSON(data);
@@ -208,10 +270,10 @@ $(document).ready( function() {
 			names.sort();
 			
 			for (var tab_title in names)
-				$("#top").append('<span>'+ names[tab_title] +'</span>');
+				$("#top").append('<a>'+ names[tab_title] +'</a>');
 			
-			$("#top span").click( function() {
-				$("#top span").removeClass('highlight');
+			$("#top a").click( function() {
+				$("#top a").removeClass('highlight');
 				$(this).addClass('highlight');
 				
 				Viewer.feed(generate_list($(this).text()));
@@ -220,7 +282,10 @@ $(document).ready( function() {
 			}).first().click();
 
 			$('#pokaz').click( function() { Viewer.show_next(); });
+			Viewer.buffer();
 		});
 	});
 });
+
+
 

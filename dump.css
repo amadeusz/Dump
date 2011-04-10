@@ -10,23 +10,29 @@ html {
 	display: none;
 }
 
-#top span {
+#top a {
 	padding: 0px 10px;
 	font-size: 16px;
 	font-family: Arial;
+	color: #bfbfbf;
+	cursor: pointer;
 }
 
 #top {
 	padding-top: 10px;
-	padding-bottom: 10px;
+	padding-bottom: 0px;
+}
+
+#top a.highlight {
+	color: white;
+}
+
+#top a:hover {
+	color: white;
 }
 
 #przelaczniki {
 	display: none;
-}
-
-.highlight {
-	color: #bfbfbf;
 }
 
 #login {
@@ -52,15 +58,15 @@ html {
 	border: none;
 }
 
-#miniatury span.slide {
-	opacity: 0.2;
-}
-
 #miniatury span.slide:hover {
-	opacity: 1.0;
+	cursor: pointer;
 }
 
 #pokaz img {
 	margin: 0px 4px;
+}
+
+#pokaz {
+	cursor: pointer;
 }
 

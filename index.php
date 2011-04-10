@@ -8,11 +8,6 @@
 			header('WWW-Authenticate: Basic realm="Wymagane logowanie"');
 			header('HTTP/1.0 401 Unauthorized');
 		}
-		else {
-			if (gethostname() == 'appload') {
-				shell_exec('mpg123 /home/appload/sounds/ten_alert_ktorego_nie_slycahc.mp3 > /dev/null &');
-			}
-		}
 		return $success;
 	}
 
@@ -33,6 +28,10 @@
 	
 		set('error_message', check_permissions());
 		set('max_size', ini_get('post_max_size') .'B');
+		
+		if (gethostname() == 'appload') {
+			shell_exec('mpg123 /home/appload/sounds/ten_alert_ktorego_nie_slycahc.mp3 > /dev/null &');
+		}
 		
 		return render('html_basics');
 	}
@@ -55,22 +54,46 @@
 	
 	dispatch('/dimensions', 'get_dimensions');
 	function get_dimensions() {
-		$place = 'http://photo.appload.pl/';
-		if (gethostname() == 'satan') { $place = 'http://localhost/~maciek/'; }
-		$arr = array();
+		$location = 'http://photo.appload.pl';
+		if (gethostname() == 'satan') { $place = 'http://localhost/~maciek/photo'; }
+		$thumbnails_folder = $location .'/thumbnail';
+		$photos_folder = 'photo';
+		$dimensions_cache_file = $photos_folder .'/meta/dimensions';
 		
-		$zdjecia = 'photo';
-		$miniatury = $place .'thumbnail';
-		if (gethostname() == 'satan') $miniatury = $place .'photo/thumbnail';
-
-		$i = 0; foreach (new DirectoryIterator($zdjecia) as $fileInfo) {
+		$dimensions = array();
+		if (file_exists($dimensions_cache_file))
+			$dimensions = unserialize(file_get_contents($dimensions_cache_file));
+			
+		$remembered_photos = array();
+		foreach ($dimensions as $key => $value)
+			$remembered_photos[] = $key;
+		
+		$found_photos = array();
+		foreach (new DirectoryIterator($photos_folder) as $fileInfo) {
 			if($fileInfo->isDot()) continue;
-			if($fileInfo->getType() == 'file') {
-				list($width, $height, $type, $attr) = getimagesize($zdjecia .'/'. $fileInfo->getFilename());
-				list($width_tb, $height_tb, $type_tb, $attr_tb) = getimagesize($miniatury .'/'. $fileInfo->getFilename() .'-100x60');
-				$arr[] = '"'. $fileInfo->getFilename() .'" : ['. $width .', '. $height .', '. $width_tb .', '. $height_tb .']';
-			}
+			if($fileInfo->getType() == 'file')
+				$found_photos[] = $fileInfo->getFilename();
 		}
+
+		$unexisting_photos = array_diff($remembered_photos, $found_photos);
+		$remembered_photos = array_diff($remembered_photos, $unexisting_photos);
+		$new_photos = array_diff($found_photos, $remembered_photos);
+		
+		foreach ($unexisting_photos as $value)
+			unset($dimensions[$value]);
+
+		foreach ($new_photos as $value) {
+			list($width, $height, $type, $attr) = getimagesize($photos_folder .'/'. $value);
+			list($thumbnail_width, $thumbnail_height, $thumbnail_type, $thumbnail_attr) = getimagesize($thumbnails_folder .'/'. $value .'-100x60');
+			$dimensions[$value] = array("width" => $width, "height" => $height, "thumbnail_width" => $thumbnail_width, "thumbnail_height" => $thumbnail_height);
+		}
+		
+		if (count($new_photos) > 0 || count($unexisting_photos) > 0)
+			file_put_contents($dimensions_cache_file, serialize($dimensions));
+		
+		$arr = array();	
+		foreach ($dimensions as $key => $value)
+			$arr[] = '"'. $key .'" : ['. $value["width"] .', '. $value["height"] .', '. $value["thumbnail_width"] .', '. $value["thumbnail_height"] .']';
 		
 		return '{'. implode(", ", $arr) .'}';
 	}
@@ -191,7 +214,7 @@ function html_basics($vars) { extract($vars); ?>
 	<div>
 		<p>Zdjęcia można sortować metodą złap i upuść.</p></div>
 	<div>
-		<p>Aby połączyć klika zdjęć, należy przytrzymać shift i kilkać. Na koniec puścić shift.</p>
+		<p>Aby połączyć zdjęć, należy przytrzymać shift i kilkać. Na koniec puścić shift.</p>
 		<p>Aby rozdzielić zdjęcia należy przytrzymać shift, kliknąć na połączone zdjęcia i puścić shift.</p></div>
 	<div>
 		<p>Aby usunąć zdjęcie, należy na nie kliknąć dwukrotnie.</p>
@@ -214,7 +237,7 @@ function html_viewer($vars) { extract($vars); ?>
 	<link href="lib/img/favico.png" rel="shortcut icon" type="image/png" />
 	
 	<meta charset="utf-8" />
-	<title>PhotoDump</title>
+	<title>Fotowrocek</title>
 </head>
 
 <body>
