@@ -17,6 +17,15 @@
 		if (gethostname() == 'satan') { option('base_uri', '/~maciek/photo'); }
 	}
 
+	function get_amazon() {
+		$request_url = "http://fotowrocek.s3.amazonaws.com/";
+		$xml = simplexml_load_file($request_url) or die("feed not loading");
+
+		$file_list = array();
+		foreach($xml->Contents as $item) $file_list[] = "". $item->Key;
+		return $file_list;
+	}
+
 	dispatch('/', 'viewer');
 	function viewer() {
 		return render('html_viewer');
