@@ -202,8 +202,8 @@ var Viewer = {
 		if (last !== this.opened) {
 			if (!this.highlighted) {
 				if (last != undefined)
-					$('#miniatury span.slide:eq('+ last +')').animate( { opacity: 0.3 } );
-				$('#miniatury span.slide:eq('+ this.opened +')').animate( { opacity: 0.7 } );
+					$('#miniatury span.slide:eq('+ last +')').animate( { opacity: 0.05 } );
+				$('#miniatury span.slide:eq('+ this.opened +')').animate( { opacity: 0.2 } );
 			}
 		}
 	},
@@ -218,8 +218,8 @@ var Viewer = {
 		}
 		else {
 			this.highlighted = false;
-			$("#miniatury span").animate( { opacity: 0.3 } );
-			$('#miniatury span.slide:eq('+ this.opened +')').stop().animate( {opacity: 0.7} );
+			$("#miniatury span").animate( { opacity: 0.05 } );
+			$('#miniatury span.slide:eq('+ this.opened +')').stop().animate( {opacity: 0.2} );
 		}
 	}
 }

@@ -250,9 +250,9 @@ function html_viewer($vars) { extract($vars); ?>
 	<div id="miniatury"></div>
 </div>
 
-<div id="left">Lewo</div>
+<div id="left">&nbsp;</div>
 
-<div id="right">Prawo</div>
+<div id="right">&nbsp;</div>
 
 <div id="pokaz"><img src="" alt="" /></div>
 

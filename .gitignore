@@ -1,2 +1,7 @@
 photo/thumbnails/*
 photo/upload/*
+2011*/*
+photo/*
+photo/*/*
+.mat*/*/*
+.mat*/*
