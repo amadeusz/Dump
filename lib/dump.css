@@ -12,7 +12,7 @@ body {
 	background-color: #FFFFDC;	
 }
 
-#top, #right, #bottom, #left, #pokaz, #przelaczniki {
+#top, #right, #bottom, #left, #pokaz, #przelaczniki, #previous, #next, #previous_hidden, #next_hidden {
 	position: absolute;
 	color: white;
 

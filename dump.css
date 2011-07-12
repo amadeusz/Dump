@@ -1,72 +1,23 @@
-html {
-	background-color: black;
-}
+html { background-color: black; }
+#top, #bottom, #left, #right { background-color: transparent; }
 
-#top, #bottom, #left, #right {
-	background-color: transparent;
-}
+#top a { padding: 0px 10px; font-size: 16px; font-family: Arial; color: #bfbfbf; cursor: pointer; }
+#top { padding-top: 10px; padding-bottom: 0px; }
+#top a.highlight { color: white; }
+#top a:hover { color: white; }
+#przelaczniki { display: none; }
+#login { position: absolute; left: 0px; top: 0px; padding: 5px; width: 16px; height: 16px; }
+#login img { visibility: hidden; width: 16px; height: 16px; }
+#login:hover img { visibility: visible; }
+#login a img { border: none; }
+#miniatury span.slide:hover { cursor: pointer; }
+#pokaz img { margin: 0px 4px; }
+#pokaz { cursor: pointer; }
 
-#left, #right {
-	display: none;
-}
+#left, #right { display: none; border: 1px solid red; }
+#previous, #next { z-index: 99; opacity: 0.0; }
+#previous:hover, #next:hover { opacity: 0.8; }
+#previous { background: url(lib/img/left.png) no-repeat center left; width: 60px; display: block; }
+#next { background: url(lib/img/right.png) no-repeat center right; width: 60px; display: block; }
 
-#top a {
-	padding: 0px 10px;
-	font-size: 16px;
-	font-family: Arial;
-	color: #bfbfbf;
-	cursor: pointer;
-}
-
-#top {
-	padding-top: 10px;
-	padding-bottom: 0px;
-}
-
-#top a.highlight {
-	color: white;
-}
-
-#top a:hover {
-	color: white;
-}
-
-#przelaczniki {
-	display: none;
-}
-
-#login {
-	position: absolute;
-	left: 0px;
-	top: 0px;
-	padding: 5px;
-	width: 16px;
-	height: 16px;
-}
-
-#login img {
-	visibility: hidden;
-	width: 16px;
-	height: 16px;
-}
-
-#login:hover img {
-	visibility: visible;
-}
-
-#login a img {
-	border: none;
-}
-
-#miniatury span.slide:hover {
-	cursor: pointer;
-}
-
-#pokaz img {
-	margin: 0px 4px;
-}
-
-#pokaz {
-	cursor: pointer;
-}
-
+#pokaz img { background: transparent; }

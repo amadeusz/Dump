@@ -22,22 +22,6 @@ body { margin: 8px; }
 
 #container li, #dropzone { -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; }
 
-
-#login {
-	position: absolute;
-	left: 0px;
-	top: 0px;
-	padding: 5px;
-	width: 16px;
-	height: 16px;
-}
-
-#login img {
-	width: 16px;
-	height: 16px;
-}
-
-
-#login a img {
-	border: none;
-}
+#login { position: absolute; left: 0px; top: 0px; padding: 5px; width: 16px; height: 16px; }
+#login img { width: 16px; height: 16px; }
+#login a img { border: none; }

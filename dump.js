@@ -48,6 +48,9 @@ var Viewer = {
 		$('#top').css('left', x).css('width', this.available_width);
 		$('#left').css('height', side_height);
 		$('#right').css('height', side_height);
+		
+		$('#previous').css('width', Math.round(this.available_width/10)).css('height', this.available_height).css('left', x).css('top', y);
+		$('#next').css('width', Math.round(this.available_width/10)).css('height', this.available_height).css('left', x + Math.round(this.available_width*(9/10))).css('top', y);
 	},
 	
 	feed : function(photos) {
@@ -107,7 +110,7 @@ var Viewer = {
 		var last_opened = this.opened;
 		if(typeof i != 'undefined') this.opened = i;
 		
-		$('#pokaz').html("");
+		$('#pokaz').stop(true, true).animate( { opacity: 0.0 }, 0).html("");
 	
 		var to_open = this.photos[this.opened]
 		
@@ -155,7 +158,7 @@ var Viewer = {
 				top_margin = (that.available_height - height) /2;
 			}
 			
-			$('#pokaz').append('<img id="photo_'+ photo.id +'" />').find('img#photo_'+ photo.id).css('width', width_attr).css('height', height_attr).css('padding-top', top_margin +'px').attr('src', 'photo/'+ photo.id).attr('alt', '');
+			$('#pokaz').append('<img id="photo_'+ photo.id +'" />').find('img#photo_'+ photo.id).css('width', width_attr).css('height', height_attr).css('padding-top', top_margin +'px').attr('src', 'photo/'+ photo.id).attr('alt', '').parent().animate( {opacity: 1.0 } );
 		});
 	
 		var opened = this.opened;
@@ -171,6 +174,19 @@ var Viewer = {
 			else {
 				if ($("#top a.highlight").next())
 					$("#top a.highlight").next().click();
+			}
+		}
+		Viewer.buffer();
+	},
+	
+	show_previous : function() {
+		if(this.filled()) {
+			if(this.opened > 0) {
+				$('#miniatury span.slide:eq('+ (this.opened -1) +')').click();
+			}
+			else {
+				if ($("#top a.highlight").prev())
+					$("#top a.highlight").prev().click();
 			}
 		}
 		Viewer.buffer();
@@ -219,7 +235,7 @@ var Viewer = {
 		else {
 			this.highlighted = false;
 			$("#miniatury span").animate( { opacity: 0.05 } );
-			$('#miniatury span.slide:eq('+ this.opened +')').stop().animate( {opacity: 0.2} );
+			$('#miniatury span.slide:eq('+ this.opened +')').animate( {opacity: 0.2} );
 		}
 	}
 }
@@ -282,6 +298,9 @@ $(document).ready( function() {
 			}).first().click();
 
 			$('#pokaz').click( function() { Viewer.show_next(); });
+			$('#next').click( function() { Viewer.show_next(); });
+			$('#previous').click( function() { Viewer.show_previous(); });			
+			
 			Viewer.buffer();
 		});
 	});
