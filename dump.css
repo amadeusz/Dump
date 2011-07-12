@@ -10,7 +10,7 @@ html { background-color: black; }
 #login img { visibility: hidden; width: 16px; height: 16px; }
 #login:hover img { visibility: visible; }
 #login a img { border: none; }
-#miniatury span.slide:hover { cursor: pointer; }
+#miniatury span.slide:hover, #next:hover, #previous:hover { cursor: pointer; }
 #pokaz img { margin: 0px 4px; }
 #pokaz { cursor: pointer; }
 
