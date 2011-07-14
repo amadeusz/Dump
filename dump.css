@@ -1,18 +1,32 @@
-html { background-color: black; }
-#top, #bottom, #left, #right { background-color: transparent; }
+/* Global */
+
+html { font-family: Trebuchet, sans; font-weight: bold; background-color: black; color: white; }
+
+/* Engine */
+
+html, body { margin: 0; padding: 0;	}
+#top, #right, #bottom, #left, #magnifier, #przelaczniki, #previous, #next { position: absolute; }
+#left { left: 0; } #right { right: 0; } #top { top: 0; width: 100%; } #bottom { bottom: 0; width: 100%; }
+#magnifier { overflow: hidden; text-align: center; }
+#bottom { overflow: hidden; }
+#bottom #thumbnails { white-space: nowrap; }
+#bottom #thumbnails img { margin: 5px; margin-top: 8px; }
+
+/* Customized */
 
 #top a { padding: 0px 10px; font-size: 16px; font-family: Arial; color: #bfbfbf; cursor: pointer; }
-#top { padding-top: 10px; padding-bottom: 0px; }
+#top { padding-top: 10px; padding-bottom: 0px; text-align: center; }
 #top a.highlight { color: white; }
 #top a:hover { color: white; }
+
 #przelaczniki { display: none; }
 #login { position: absolute; left: 0px; top: 0px; padding: 5px; width: 16px; height: 16px; }
 #login img { visibility: hidden; width: 16px; height: 16px; }
 #login:hover img { visibility: visible; }
 #login a img { border: none; }
-#miniatury span.slide:hover, #next:hover, #previous:hover { cursor: pointer; }
-#pokaz img { margin: 0px 4px; }
-#pokaz { cursor: pointer; }
+#thumbnails span.slide:hover, #next:hover, #previous:hover { cursor: pointer; }
+#magnifier img { margin: 0px 4px; }
+#magnifier { cursor: pointer; }
 
 #left, #right { display: none; border: 1px solid red; }
 #previous, #next { z-index: 99; opacity: 0.0; }
@@ -20,4 +34,43 @@ html { background-color: black; }
 #previous { background: url(lib/img/left.png) no-repeat center left; width: 60px; display: block; }
 #next { background: url(lib/img/right.png) no-repeat center right; width: 60px; display: block; }
 
-#pokaz img { background: transparent; }
+#magnifier img { background: transparent; }
+
+
+/* Panel switch */
+
+/*
+#przelaczniki {
+	top: 0px;
+	right: 57px;
+}
+
+#przelaczniki div {
+	padding: 1px;
+	margin-right: 3px;
+	width: 16px;
+	height: 16px;
+	float: left;
+	border: 1px solid white;
+}
+
+#przelaczniki div:hover {
+	background-color: red;
+}
+
+#left, #przelacznik_lewego {
+	background-color: #FD8E80;
+}
+
+#right, #przelacznik_prawego {
+	background-color: #1E90FF;
+}
+
+#top, #przelacznik_gory {
+	background-color: #349F3F;
+}
+
+#bottom, #przelacznik_dolu {
+	background-color: #E8D937;
+}
+*/

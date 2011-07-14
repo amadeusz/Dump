@@ -44,7 +44,7 @@ var Viewer = {
 		var side_height = window_height - margin;
 		if($('#bottom').is(':visible')) side_height -= $('#bottom').outerHeight(true);
 		
-		$('#pokaz').css('width', this.available_width).css('height', this.available_height).css('left', x).css('top', y);
+		$('#magnifier').css('width', this.available_width).css('height', this.available_height).css('left', x).css('top', y);
 		$('#top').css('left', x).css('width', this.available_width);
 		$('#left').css('height', side_height);
 		$('#right').css('height', side_height);
@@ -58,21 +58,21 @@ var Viewer = {
 		this.buffered = {};
 		this.opened = 0;
 		
-		$('#miniatury').html('');
+		$('#thumbnails').html('');
 		
 		var that = this;
 		$.each(this.photos, function(key, photo) {
 			if ($.type(photo) == 'object') {
-				$('#miniatury').append('<span class="slide"><img src="thumbnail/'+ photo.id +'-'+ that.configuration.thumbnail_max_width +'x'+ that.configuration.thumbnail_max_height +'" width="'+ photo.thumbnail_width +'" height="'+ photo.thumbnail_height +'" /></span>');
+				$('#thumbnails').append('<span class="slide"><img src="thumbnail/'+ photo.id +'-'+ that.configuration.thumbnail_max_width +'x'+ that.configuration.thumbnail_max_height +'" width="'+ photo.thumbnail_width +'" height="'+ photo.thumbnail_height +'" /></span>');
 			}
 			else {
-				$('#miniatury').append('<span class="slide">' + $.map(photo, function(subphoto) {
+				$('#thumbnails').append('<span class="slide">' + $.map(photo, function(subphoto) {
 					return '<img src="thumbnail/'+ subphoto.id +'-'+ that.configuration.thumbnail_max_width +'x'+ that.configuration.thumbnail_max_height +'" width="'+ subphoto.thumbnail_width +'" height="'+ subphoto.thumbnail_height +'" />'
 				}).join("") + '</span>');
 			}
 		});
 
-		$('#miniatury span.slide').each(function(i, val) {
+		$('#thumbnails span.slide').each(function(i, val) {
 			$(this).click( function() {
 				Viewer.show(i);
 			});
@@ -85,13 +85,13 @@ var Viewer = {
 	},
 	
 	calculate_thumbnails : function () {
-		var css_offset = $('#miniatury').css("margin-left");
+		var css_offset = $('#thumbnails').css("margin-left");
 		this.thumbnails_offset = - new Number(css_offset.substr(0, css_offset.length -2));
 		
-		this.thumbnails_space = $('#miniatury').width() - this.thumbnails_offset;	
+		this.thumbnails_space = $('#thumbnails').width() - this.thumbnails_offset;	
 
 		var width = 0;
-		$('#miniatury span.slide').each( function() {
+		$('#thumbnails span.slide').each( function() {
 			width += $(this).outerWidth(true);
 		} );
 		
@@ -101,7 +101,7 @@ var Viewer = {
 	slide : function(thumbnail, czas) {
 		this.calculate_thumbnails();
 		nowa_pozycja = Math.round(this.thumbnails_offset + thumbnail.position().left - this.thumbnails_space/2 + thumbnail.outerWidth(true) /2);
-		$('#miniatury').stop().animate( { marginLeft: - nowa_pozycja +'px' }, czas );
+		$('#thumbnails').stop().animate( { marginLeft: - nowa_pozycja +'px' }, czas );
 	},
 	
 	show : function(i) {
@@ -110,7 +110,7 @@ var Viewer = {
 		var last_opened = this.opened;
 		if(typeof i != 'undefined') this.opened = i;
 		
-		$('#pokaz').stop(true, true).animate( { opacity: 0.0 }, 0).html("");
+		$('#magnifier').stop(true, true).animate( { opacity: 0.0 }, 0).html("");
 	
 		var to_open = this.photos[this.opened]
 		
@@ -158,18 +158,18 @@ var Viewer = {
 				top_margin = (that.available_height - height) /2;
 			}
 			
-			$('#pokaz').append('<img id="photo_'+ photo.id +'" />').find('img#photo_'+ photo.id).css('width', width_attr).css('height', height_attr).css('padding-top', top_margin +'px').attr('src', 'photo/'+ photo.id).attr('alt', '').parent().animate( {opacity: 1.0 } );
+			$('#magnifier').append('<img id="photo_'+ photo.id +'" />').find('img#photo_'+ photo.id).css('width', width_attr).css('height', height_attr).css('padding-top', top_margin +'px').attr('src', 'photo/'+ photo.id).attr('alt', '').parent().animate( {opacity: 1.0 } );
 		});
 	
 		var opened = this.opened;
-		this.slide($('#miniatury span.slide:eq('+ this.opened +')'));
+		this.slide($('#thumbnails span.slide:eq('+ this.opened +')'));
 		this.highlight(last_opened);
 	},
 	
 	show_next : function() {
 		if(this.filled()) {
 			if(this.opened < this.photos.length -1) {
-				$('#miniatury span.slide:eq('+ (this.opened +1) +')').click();
+				$('#thumbnails span.slide:eq('+ (this.opened +1) +')').click();
 			}
 			else {
 				if ($("#top a.highlight").next())
@@ -182,7 +182,7 @@ var Viewer = {
 	show_previous : function() {
 		if(this.filled()) {
 			if(this.opened > 0) {
-				$('#miniatury span.slide:eq('+ (this.opened -1) +')').click();
+				$('#thumbnails span.slide:eq('+ (this.opened -1) +')').click();
 			}
 			else {
 				if ($("#top a.highlight").prev())
@@ -218,8 +218,8 @@ var Viewer = {
 		if (last !== this.opened) {
 			if (!this.highlighted) {
 				if (last != undefined)
-					$('#miniatury span.slide:eq('+ last +')').animate( { opacity: 0.05 } );
-				$('#miniatury span.slide:eq('+ this.opened +')').animate( { opacity: 0.2 } );
+					$('#thumbnails span.slide:eq('+ last +')').animate( { opacity: 0.05 } );
+				$('#thumbnails span.slide:eq('+ this.opened +')').animate( { opacity: 0.2 } );
 			}
 		}
 	},
@@ -230,12 +230,12 @@ var Viewer = {
 			
 		if (should_i) {
 			this.highlighted = true;
-			$("#miniatury span").animate( { opacity: 1.0 } );
+			$("#thumbnails span").animate( { opacity: 1.0 } );
 		}
 		else {
 			this.highlighted = false;
-			$("#miniatury span").animate( { opacity: 0.05 } );
-			$('#miniatury span.slide:eq('+ this.opened +')').animate( {opacity: 0.2} );
+			$("#thumbnails span").animate( { opacity: 0.05 } );
+			$('#thumbnails span.slide:eq('+ this.opened +')').animate( {opacity: 0.2} );
 		}
 	}
 }
@@ -263,7 +263,7 @@ $(document).ready( function() {
 		Viewer.show();
 	});
 	
-	$("#miniatury").hover(function() {
+	$("#thumbnails").hover(function() {
 		Viewer.highlight_all(true);
 	},
 	function() {
@@ -297,9 +297,9 @@ $(document).ready( function() {
 				Viewer.show();
 			}).first().click();
 
-			$('#pokaz').click( function() { Viewer.show_next(); });
+			$('#magnifier').click( function() { Viewer.show_next(); });
 			$('#next').click( function() { Viewer.show_next(); });
-			$('#previous').click( function() { Viewer.show_previous(); });			
+			$('#previous').click( function() { Viewer.show_previous(); });
 			
 			Viewer.buffer();
 		});
