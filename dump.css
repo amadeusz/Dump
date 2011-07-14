@@ -1,51 +1,49 @@
 /* Global */
 
 html { font-family: Trebuchet, sans; font-weight: bold; background-color: black; color: white; }
+#login a img { border: none; }
+
 
 /* Engine */
 
 html, body { margin: 0; padding: 0;	}
-#top, #right, #bottom, #left, #magnifier, #przelaczniki, #previous, #next { position: absolute; }
+
+#top, #right, #bottom, #left, #magnifier, #switches, #previous, #next { position: absolute; }
 #left { left: 0; } #right { right: 0; } #top { top: 0; width: 100%; } #bottom { bottom: 0; width: 100%; }
-#magnifier { overflow: hidden; text-align: center; }
+
+#magnifier { overflow: hidden; text-align: center; cursor: pointer; }
+#magnifier img { background: transparent; margin: 0px 4px; }
+
 #bottom { overflow: hidden; }
 #bottom #thumbnails { white-space: nowrap; }
 #bottom #thumbnails img { margin: 5px; margin-top: 8px; }
+#bottom #thumbnails span.slide:hover, #next:hover, #previous:hover { cursor: pointer; }
+
 
 /* Customized */
 
 #top a { padding: 0px 10px; font-size: 16px; font-family: Arial; color: #bfbfbf; cursor: pointer; }
 #top { padding-top: 10px; padding-bottom: 0px; text-align: center; }
-#top a.highlight { color: white; }
-#top a:hover { color: white; }
+#top a.highlight { color: white; } #top a:hover { color: white; }
 
-#przelaczniki { display: none; }
-#login { position: absolute; left: 0px; top: 0px; padding: 5px; width: 16px; height: 16px; }
-#login img { visibility: hidden; width: 16px; height: 16px; }
-#login:hover img { visibility: visible; }
-#login a img { border: none; }
-#thumbnails span.slide:hover, #next:hover, #previous:hover { cursor: pointer; }
-#magnifier img { margin: 0px 4px; }
-#magnifier { cursor: pointer; }
-
-#left, #right { display: none; border: 1px solid red; }
 #previous, #next { z-index: 99; opacity: 0.0; }
 #previous:hover, #next:hover { opacity: 0.8; }
 #previous { background: url(lib/img/left.png) no-repeat center left; width: 60px; display: block; }
 #next { background: url(lib/img/right.png) no-repeat center right; width: 60px; display: block; }
 
-#magnifier img { background: transparent; }
+#login { position: absolute; left: 0px; top: 0px; padding: 5px; width: 16px; height: 16px; }
+#login img { visibility: hidden; width: 16px; height: 16px; }
+#login:hover img { visibility: visible; }
 
 
-/* Panel switch */
+/* Switches
 
-/*
-#przelaczniki {
+#switches {
 	top: 0px;
 	right: 57px;
 }
 
-#przelaczniki div {
+#switches div {
 	padding: 1px;
 	margin-right: 3px;
 	width: 16px;
@@ -54,23 +52,26 @@ html, body { margin: 0; padding: 0;	}
 	border: 1px solid white;
 }
 
-#przelaczniki div:hover {
+#switches div:hover {
 	background-color: red;
 }
 
-#left, #przelacznik_lewego {
+#left, #switch_left {
 	background-color: #FD8E80;
 }
 
-#right, #przelacznik_prawego {
+#right, #switch_right {
 	background-color: #1E90FF;
 }
 
-#top, #przelacznik_gory {
+#top, #switch_top {
 	background-color: #349F3F;
 }
 
-#bottom, #przelacznik_dolu {
+#bottom, #switch_bottom {
 	background-color: #E8D937;
 }
+
+#switches { display: none; }
+
 */

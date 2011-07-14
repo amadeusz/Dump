@@ -119,7 +119,14 @@ var Viewer = {
 		}
 
 		var real_width_sum = 0, real_height = 0, scaled = false;
+		var that = this;
 		$.each(to_open, function(key, photo) {
+		
+			if (!(that.buffered[photo.id] && that.buffered[photo.id].complete)) {
+				// Viewer.buffer();
+				// alert(photo.id);
+			}
+			
 			real_width_sum += photo.width;
 			if (photo.height > real_height) {
 				real_height = photo.height;
@@ -209,6 +216,9 @@ var Viewer = {
 		$.each(to_buffer, function(key, photo) {
 			if (that.buffered[photo.id] === undefined) {
 				that.buffered[photo.id] = new Image(photo.width, photo.height);
+				that.buffered[photo.id].onload = function() {
+//					alert(photo.id + " zostało pobrane");
+				};
 				that.buffered[photo.id].src = 'photo/'+ photo.id;
 			}
 		});

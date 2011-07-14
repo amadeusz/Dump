@@ -257,11 +257,11 @@
 	<div id="previous">&nbsp;</div>
 	<div id="next">&nbsp;</div>
 
-	<div id="przelaczniki">
-		<div id="przelacznik_gory"></div>
-		<div id="przelacznik_prawego"></div>
-		<div id="przelacznik_dolu"></div>
-		<div id="przelacznik_lewego"></div>
+	<div id="switches">
+		<div id="switch_top"></div>
+		<div id="switch_right"></div>
+		<div id="switch_bottom"></div>
+		<div id="switch_left"></div>
 	</div>
 </body>
 </html><?php
